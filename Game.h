@@ -16,6 +16,9 @@ private:
 	float p1X, p1Y, p1_w, p1_h;
 	float p2X, p2Y, p2_w, p2_h;
 
+	sf::FloatRect player1Bounds = this->player1.getGlobalBounds();
+	sf::FloatRect player2Bounds = this->player2.getGlobalBounds();
+
 	float VELOCITY = 7;
 
 	void initVars();
@@ -25,6 +28,9 @@ private:
 
 	void MovePlayer1();
 	void MovePlayer2();
+
+	void player1WindowBoundsCollsion();
+	void player2WindowBoundsCollsion();
 	
 	
 public:

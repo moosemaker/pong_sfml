@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 void Game::initVars()
 {
@@ -38,19 +39,38 @@ void Game::initPlayer2()
 
 void Game::MovePlayer1()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	sf::Vector2f player1Pos = this->player1.getPosition();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) & player1Pos.y > 10) {
 		player1.move(0.0f, -this->VELOCITY);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		std::cout << player1Pos.x << " " << player1Pos.y << std::endl;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) & player1Pos.y < 449.0f)
+	{
 		player1.move(0.0f, this->VELOCITY);
+		std::cout << player1Pos.x << " " << player1Pos.y << std::endl;
+	}
 	
 }
 
 void Game::MovePlayer2()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	sf::Vector2f player2Pos = this->player2.getPosition();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) & player2Pos.y > 10)
 		player2.move(0.0f, -this->VELOCITY);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) & player2Pos.y < 449.0f)
 		player2.move(0.0f, this->VELOCITY);
+}
+
+
+void Game::player2WindowBoundsCollsion()
+{
+	sf::Vector2f player2Pos = this->player2.getPosition();
+	if (this->player2Bounds.top <= 0) {
+		this->player2.setPosition(895.0f - player1Bounds.width, player2Pos.y);
+	}
+	else if (this->player2Bounds.top - player2Bounds.height - 5 >= 595.0f) {
+		this->player2.setPosition(895.0f, 595 - this->player2Bounds.height);
+	}
 }
 
 Game::Game()
@@ -59,6 +79,8 @@ Game::Game()
 	this->initWindow();
 	this->initPlayer1();
 	this->initPlayer2();
+
+	
 	
 }
 
