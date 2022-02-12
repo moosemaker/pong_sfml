@@ -13,14 +13,22 @@ void Game::initWindow()
 void Game::initPlayer1()
 {
 	this->player1.playerX = 5.0f;
-	
+	this->player1.playerY = 600 / 2 - this->player1.paddle_h / 2;
 
+}
+
+void Game::initPlayer2()
+{
+	this->player2.playerX = 900.0f - 10;
+	this->player2.playerY = 600 / 2 - this->player2.paddle_h / 2;
 }
 
 Game::Game()
 {
 	this->initVars();
 	this->initWindow();
+	this->initPlayer1();
+	this->initPlayer2();
 }
 
 Game::~Game()
@@ -58,6 +66,6 @@ void Game::update()
 void Game::render()
 {
 	this->window->clear();
-	
+	this->window->draw(this->player1);
 	this->window->display();
 }
