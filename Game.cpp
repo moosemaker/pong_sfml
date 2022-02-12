@@ -3,24 +3,54 @@
 void Game::initVars()
 {
 	this->window = nullptr;
+
 }
 
 void Game::initWindow()
 {
 	this->window = new sf::RenderWindow(sf::VideoMode(900, 600), "Pong", sf::Style::Titlebar | sf::Style::Close);
+	this->window->setFramerateLimit(60);
 }
 
 void Game::initPlayer1()
 {
-	this->player1.playerX = 5.0f;
-	this->player1.playerY = 600 / 2 - this->player1.paddle_h / 2;
+	this->p1_w = 20.0f;
+	this->p1_h = 140.0f;
+	this->p1X = 5.0f;
+	this->p1Y = 600 / 2 - p1_h / 2;
 
+	this->player1.setSize(sf::Vector2f(p1_w, p1_h));
+	this->player1.setPosition(sf::Vector2f(p1X, p1Y));
+	this->player1.setFillColor(sf::Color(211, 211, 211, 255));
 }
 
 void Game::initPlayer2()
 {
-	this->player2.playerX = 900.0f - 10;
-	this->player2.playerY = 600 / 2 - this->player2.paddle_h / 2;
+	this->p2_w = 20.0f;
+	this->p2_h = 140.0f;
+	this->p2X = (900 - p2_w) - 5;
+	this->p2Y = 600 / 2 - p2_h / 2;
+
+	this->player2.setSize(sf::Vector2f(p2_w, p2_h));
+	this->player2.setPosition(sf::Vector2f(p2X, p2Y));
+	this->player2.setFillColor(sf::Color(211, 211, 211, 255));
+}
+
+void Game::MovePlayer1()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+		player1.move(0.0f, -this->VELOCITY);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		player1.move(0.0f, this->VELOCITY);
+	
+}
+
+void Game::MovePlayer2()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		player2.move(0.0f, -this->VELOCITY);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		player2.move(0.0f, this->VELOCITY);
 }
 
 Game::Game()
@@ -29,6 +59,7 @@ Game::Game()
 	this->initWindow();
 	this->initPlayer1();
 	this->initPlayer2();
+	
 }
 
 Game::~Game()
@@ -40,6 +71,9 @@ const bool Game::running() const
 {
 	return this->window->isOpen();
 }
+
+
+
 
 void Game::pollEvent()
 {
@@ -61,11 +95,14 @@ void Game::pollEvent()
 void Game::update()
 {
 	this->pollEvent();
+	this->MovePlayer1();
+	this->MovePlayer2();
 }
 
 void Game::render()
 {
 	this->window->clear();
-	this->window->draw(this->player1);
+	this->window->draw(player1);
+	this->window->draw(player2);
 	this->window->display();
 }
