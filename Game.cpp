@@ -37,17 +37,27 @@ void Game::initPlayer2()
 	this->player2.setFillColor(sf::Color(211, 211, 211, 255));
 }
 
+void Game::initBall()
+{
+	this->BX = 450.0f;
+	this->BY = 300.0f;
+	this->BRad = 15.0f;
+	this->ball.setRadius(BRad);
+	this->ball.setPosition(BX, BY);
+	this->ball.setFillColor(sf::Color(150, 150, 150, 255));
+}
+
 void Game::MovePlayer1()
 {
 	sf::Vector2f player1Pos = this->player1.getPosition();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) & player1Pos.y > 10) {
 		player1.move(0.0f, -this->VELOCITY);
-		std::cout << player1Pos.x << " " << player1Pos.y << std::endl;
+		
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) & player1Pos.y < 449.0f)
 	{
 		player1.move(0.0f, this->VELOCITY);
-		std::cout << player1Pos.x << " " << player1Pos.y << std::endl;
+		
 	}
 	
 }
@@ -55,23 +65,47 @@ void Game::MovePlayer1()
 void Game::MovePlayer2()
 {
 	sf::Vector2f player2Pos = this->player2.getPosition();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) & player2Pos.y > 10)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) & player2Pos.y > 10) {
 		player2.move(0.0f, -this->VELOCITY);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) & player2Pos.y < 449.0f)
+
+		
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) & player2Pos.y < 449.0f){
 		player2.move(0.0f, this->VELOCITY);
+
+		
+	}
+		
+		
 }
 
-
-void Game::player2WindowBoundsCollsion()
+void Game::resetPosOfBall()
 {
-	sf::Vector2f player2Pos = this->player2.getPosition();
-	if (this->player2Bounds.top <= 0) {
-		this->player2.setPosition(895.0f - player1Bounds.width, player2Pos.y);
+	if (ball.getPosition().x < 0 || ball.getPosition().x > 900 - ball.getGlobalBounds().width - 5)
+	{
+		this->BX = 450.0f;
+		this->BY = 300.0f;
 	}
-	else if (this->player2Bounds.top - player2Bounds.height - 5 >= 595.0f) {
-		this->player2.setPosition(895.0f, 595 - this->player2Bounds.height);
+	
+}
+
+void Game::BallAnimations()
+{
+	this->BX += this->B_speed_X;
+	this->BY += this->B_speed_Y;
+	this->ball.move(this->B_speed_X, this->B_speed_Y);
+
+	if (ball.getGlobalBounds().intersects(player1.getGlobalBounds()) || ball.getGlobalBounds().intersects(player2.getGlobalBounds()))
+	{
+		this->B_speed_X *= -1;
+	}
+	
+	else if (ball.getPosition().y < 0 || ball.getPosition().y > 600 - ball.getGlobalBounds().width - 5)
+	{
+		this->B_speed_Y *= -1;
 	}
 }
+
 
 Game::Game()
 {
@@ -79,8 +113,7 @@ Game::Game()
 	this->initWindow();
 	this->initPlayer1();
 	this->initPlayer2();
-
-	
+	this->initBall();
 	
 }
 
@@ -93,10 +126,6 @@ const bool Game::running() const
 {
 	return this->window->isOpen();
 }
-
-
-
-
 void Game::pollEvent()
 {
 	while (this->window->pollEvent(this->ev))
@@ -119,6 +148,8 @@ void Game::update()
 	this->pollEvent();
 	this->MovePlayer1();
 	this->MovePlayer2();
+	this->BallAnimations();
+	this->resetPosOfBall();
 }
 
 void Game::render()
@@ -126,5 +157,6 @@ void Game::render()
 	this->window->clear();
 	this->window->draw(player1);
 	this->window->draw(player2);
+	this->window->draw(ball);
 	this->window->display();
 }
