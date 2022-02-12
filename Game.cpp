@@ -10,6 +10,13 @@ void Game::initWindow()
 	this->window = new sf::RenderWindow(sf::VideoMode(900, 600), "Pong", sf::Style::Titlebar | sf::Style::Close);
 }
 
+void Game::initPlayer1()
+{
+	this->player1.playerX = 5.0f;
+	
+
+}
+
 Game::Game()
 {
 	this->initVars();
