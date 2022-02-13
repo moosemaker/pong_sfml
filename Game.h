@@ -29,7 +29,7 @@ private:
 	float BRad, BX, BY;
 	float srtPosXBor, srtPosYBor;
 	float borderW, borderH;
-	float B_speed_X = -2.0f, B_speed_Y = 2.0f;
+	float B_speed_X = -5.0f, B_speed_Y = 5.0f;
 	int p1Score = 0, p2Score = 0;
 
 	sf::FloatRect player1Bounds = this->player1.getGlobalBounds();

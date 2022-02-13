@@ -114,6 +114,7 @@ void Game::BallAnimations()
 		this->BX = WIDTH / 2;
 		this->BY = HEIGHT / 2;
 		this->ball.setPosition(BX, BY);
+		Sleep(3000);
 		//this->B_speed_X *= -1;
 	}
 	else if (ball.getPosition().x > 900 - 30)
@@ -123,6 +124,7 @@ void Game::BallAnimations()
 		this->BX = WIDTH / 2;
 		this->BY = HEIGHT / 2;
 		this->ball.setPosition(BX, BY);
+		Sleep(3000);
 		//this->B_speed_X *= -1;
 	}
 
@@ -170,7 +172,6 @@ void Game::update()
 	this->MovePlayer1();
 	this->MovePlayer2();
 	this->BallAnimations();
-
 }
 
 void Game::render()
