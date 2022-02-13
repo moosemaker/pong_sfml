@@ -5,6 +5,9 @@
 #include <Windows.h>
 #include <windows.data.json.h>
 
+#define WIDTH 900
+#define HEIGHT 600
+
 class Game
 {
 
@@ -26,7 +29,7 @@ private:
 	float BRad, BX, BY;
 	float srtPosXBor, srtPosYBor;
 	float borderW, borderH;
-	float B_speed_X = -20.0f, B_speed_Y = 20.0f;
+	float B_speed_X = -2.0f, B_speed_Y = 2.0f;
 	int p1Score = 0, p2Score = 0;
 
 	sf::FloatRect player1Bounds = this->player1.getGlobalBounds();

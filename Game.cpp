@@ -10,7 +10,7 @@ void Game::initVars()
 
 void Game::initWindow()
 {
-	this->window = new sf::RenderWindow(sf::VideoMode(900, 600), "Pong", sf::Style::Titlebar | sf::Style::Close);
+	this->window = new sf::RenderWindow(sf::VideoMode(WIDTH, HEIGHT), "Pong", sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(60);
 }
 
@@ -19,7 +19,7 @@ void Game::initPlayer1()
 	this->p1_w = 20.0f;
 	this->p1_h = 140.0f;
 	this->p1X = 5.0f;
-	this->p1Y = 600 / 2 - p1_h / 2;
+	this->p1Y = HEIGHT / 2 - p1_h / 2;
 
 	this->player1.setSize(sf::Vector2f(p1_w, p1_h));
 	this->player1.setPosition(sf::Vector2f(p1X, p1Y));
@@ -33,8 +33,8 @@ void Game::initPlayer2()
 {
 	this->p2_w = 20.0f;
 	this->p2_h = 140.0f;
-	this->p2X = (900 - p2_w) - 5;
-	this->p2Y = 600 / 2 - p2_h / 2;
+	this->p2X = (WIDTH - p2_w) - 5;
+	this->p2Y = HEIGHT / 2 - p2_h / 2;
 
 	this->player2.setSize(sf::Vector2f(p2_w, p2_h));
 	this->player2.setPosition(sf::Vector2f(p2X, p2Y));
@@ -111,13 +111,19 @@ void Game::BallAnimations()
 	{
 		this->p2Score++;
 		this->Player2Score.setString(std::to_string(p2Score));
-		this->B_speed_X *= -1;
+		this->BX = WIDTH / 2;
+		this->BY = HEIGHT / 2;
+		this->ball.setPosition(BX, BY);
+		//this->B_speed_X *= -1;
 	}
 	else if (ball.getPosition().x > 900 - 30)
 	{
 		this->p1Score++;
 		this->Player1Score.setString(std::to_string(p1Score));
-		this->B_speed_X *= -1;
+		this->BX = WIDTH / 2;
+		this->BY = HEIGHT / 2;
+		this->ball.setPosition(BX, BY);
+		//this->B_speed_X *= -1;
 	}
 
 }
