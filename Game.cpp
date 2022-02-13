@@ -1,10 +1,11 @@
 #include "Game.h"
 #include <iostream>
+#include <string>
 
 void Game::initVars()
 {
 	this->window = nullptr;
-
+	this->font.loadFromFile("C:/Windows/Fonts/arial.ttf");
 }
 
 void Game::initWindow()
@@ -23,6 +24,9 @@ void Game::initPlayer1()
 	this->player1.setSize(sf::Vector2f(p1_w, p1_h));
 	this->player1.setPosition(sf::Vector2f(p1X, p1Y));
 	this->player1.setFillColor(sf::Color(211, 211, 211, 255));
+	this->Player1Score.setFont(font);
+	this->Player1Score.setString(std::to_string(p1Score));
+	
 }
 
 void Game::initPlayer2()
@@ -35,6 +39,9 @@ void Game::initPlayer2()
 	this->player2.setSize(sf::Vector2f(p2_w, p2_h));
 	this->player2.setPosition(sf::Vector2f(p2X, p2Y));
 	this->player2.setFillColor(sf::Color(211, 211, 211, 255));
+	this->Player2Score.setFont(font);
+	this->Player2Score.setString(std::to_string(p2Score));
+	this->Player2Score.setPosition(880.0f, 0.0f);
 }
 
 void Game::initBall()
@@ -45,6 +52,15 @@ void Game::initBall()
 	this->ball.setRadius(BRad);
 	this->ball.setPosition(BX, BY);
 	this->ball.setFillColor(sf::Color(150, 150, 150, 255));
+}
+
+void Game::initBorder()
+{
+	this->borderW = 7;
+	this->borderH = 600;
+	this->border.setSize(sf::Vector2f(borderW, borderH));
+	this->border.setPosition(sf::Vector2f(445.0f, 0.0f));
+	this->border.setFillColor(sf::Color(211, 211, 211, 255));
 }
 
 void Game::MovePlayer1()
@@ -67,26 +83,13 @@ void Game::MovePlayer2()
 	sf::Vector2f player2Pos = this->player2.getPosition();
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) & player2Pos.y > 10) {
 		player2.move(0.0f, -this->VELOCITY);
-
 		
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) & player2Pos.y < 449.0f){
 		player2.move(0.0f, this->VELOCITY);
-
 		
-	}
+	}	
 		
-		
-}
-
-void Game::resetPosOfBall()
-{
-	if (ball.getPosition().x < 0 || ball.getPosition().x > 900 - ball.getGlobalBounds().width - 5)
-	{
-		this->BX = 450.0f;
-		this->BY = 300.0f;
-	}
-	
 }
 
 void Game::BallAnimations()
@@ -104,9 +107,20 @@ void Game::BallAnimations()
 	{
 		this->B_speed_Y *= -1;
 	}
+	else if (ball.getPosition().x < 0)
+	{
+		this->p2Score++;
+		this->Player2Score.setString(std::to_string(p2Score));
+		this->B_speed_X *= -1;
+	}
+	else if (ball.getPosition().x > 900 - 30)
+	{
+		this->p1Score++;
+		this->Player1Score.setString(std::to_string(p1Score));
+		this->B_speed_X *= -1;
+	}
+
 }
-
-
 Game::Game()
 {
 	this->initVars();
@@ -114,6 +128,7 @@ Game::Game()
 	this->initPlayer1();
 	this->initPlayer2();
 	this->initBall();
+	this->initBorder();
 	
 }
 
@@ -149,14 +164,18 @@ void Game::update()
 	this->MovePlayer1();
 	this->MovePlayer2();
 	this->BallAnimations();
-	this->resetPosOfBall();
+
 }
 
 void Game::render()
 {
 	this->window->clear();
+
 	this->window->draw(player1);
 	this->window->draw(player2);
 	this->window->draw(ball);
+	this->window->draw(border);
+	this->window->draw(Player1Score);
+	this->window->draw(Player2Score);
 	this->window->display();
 }
